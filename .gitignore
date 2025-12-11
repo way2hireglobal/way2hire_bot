@@ -1,0 +1,57 @@
+# Local Netlify folder
+.netlify
+
+# ===============================
+# Node Modules & Dependencies
+# ===============================
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===============================
+# Build / Output
+# ===============================
+build/
+dist/
+.netlify/
+
+# Netlify Functions – compiled output (if Netlify builds them)
+netlify/functions/build/
+netlify/functions/*.js.map
+
+# ===============================
+# Environment Files (do NOT commit secrets)
+# ===============================
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# ===============================
+# Cache folders
+# ===============================
+.cache/
+.tmp/
+.eslintcache
+
+# ===============================
+# OS / Editor Files
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# Logs
+# ===============================
+*.log
+logs/
+debug.log
+
+# ===============================
+# Deno / Lock files not needed by GitHub
+# ===============================
+deno.lock

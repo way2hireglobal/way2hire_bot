@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/chat"
+  to = "/"
+  status = 200
