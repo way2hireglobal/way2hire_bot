@@ -26,7 +26,7 @@ body {
   font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
   background: var(--bg);
   margin: 0;
-  padding: 24px;
+  padding: 0px;
   display: flex;
   justify-content: center;
   color: var(--text);
@@ -35,9 +35,9 @@ body {
 
 /* CHAT BOX */
 .chat-launcher {
-  width: 500px;
+  width: inherit;
   height: 620px;
-  max-width: calc(100% - 48px);
+  max-width: inherit;
   background: var(--card);
   border-radius: 12px;
   box-shadow: 0 6px 28px rgba(0, 0, 0, 0.06);
@@ -171,7 +171,7 @@ body {
 /* COMPOSER */
 .composer {
   position: absolute;
-  width: 424px;
+  width: auto;
   bottom: 0px;
   left: 0px;
   right: 12px;
