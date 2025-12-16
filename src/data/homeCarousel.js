@@ -1,7 +1,7 @@
 const homeCarouselItems = [
   {
     title: "Way2Hire Contact ",
-    subtitle: "Have questions? Get in touch with our team anytime.",
+    subtitle: "Have questions? Get in touch with our team.",
     imageUrl: "/carousel/contact.png",
 
     // 👉 contact info

@@ -14,18 +14,21 @@
 ================================ */
 .carousel-slide {
   position: relative;
+  width: 100%;
   overflow: hidden;
   border-radius: 14px;
 }
 
 /* ===============================
-   Individual Slide
+   Individual Slide (SINGLE WIDTH SOURCE)
 ================================ */
 .carousel-item {
   display: none;
+  width: 100%;
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden; /* 🔑 ensures image & content align */
   cursor: pointer;
 }
 
@@ -42,24 +45,24 @@
 }
 
 /* ===============================
-   Image (FULL WIDTH FIX)
+   Image (NO CROP, FULL WIDTH)
 ================================ */
 .carousel-image {
   width: 100%;
-  height: auto;          /* FIXED HEIGHT */
-  object-fit: contain;     /* ⬅ fills card fully */
+  height: 180px;              /* 🔑 stable height for widget */
+  object-fit: contain;        /* 🔑 no cropping */
   object-position: center;
   display: block;
-  border-radius: 14px 14px 0 0;
   background: #f1f5f9;
-  max-height: 220px;
 }
 
 /* ===============================
-   Content Area
+   Content Area (MATCH IMAGE WIDTH)
 ================================ */
 .carousel-content {
+  width: 100%;
   padding: 12px;
+  box-sizing: border-box;
 }
 
 .carousel-title {
@@ -154,7 +157,7 @@
 ================================ */
 @media (max-width: 420px) {
   .carousel-image {
-    height: 140px;
+    height: 140px; /* smaller but still full image */
   }
 
   .carousel-content {
@@ -168,7 +171,4 @@
   .carousel-sub {
     font-size: 11px;
   }
-}
-.chat-carousel img {
-  max-width: 100%;
 }
