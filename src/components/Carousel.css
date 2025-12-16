@@ -14,21 +14,18 @@
 ================================ */
 .carousel-slide {
   position: relative;
-  width: 100%;
   overflow: hidden;
   border-radius: 14px;
 }
 
 /* ===============================
-   Individual Slide (SINGLE WIDTH SOURCE)
+   Individual Slide
 ================================ */
 .carousel-item {
   display: none;
-  width: 100%;
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  overflow: hidden; /* 🔑 ensures image & content align */
   cursor: pointer;
 }
 
@@ -43,25 +40,26 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
   }
 }
+
 /* ===============================
-   Image (NO CROP, FULL WIDTH)
+   Image (FULL WIDTH FIX)
 ================================ */
 .carousel-image {
   width: 100%;
-  height: 180px;              /* 🔑 stable height for widget */
-  object-fit: cover;        /* 🔑 no cropping */
+  height: auto;          /* FIXED HEIGHT */
+  object-fit: cover;     /* ⬅ fills card fully */
   object-position: center;
   display: block;
+  border-radius: 14px 14px 0 0;
   background: #f1f5f9;
+  max-height: 220px;
 }
 
 /* ===============================
-   Content Area (MATCH IMAGE WIDTH)
+   Content Area
 ================================ */
 .carousel-content {
-  width: 100%;
   padding: 12px;
-  box-sizing: border-box;
 }
 
 .carousel-title {
@@ -156,7 +154,7 @@
 ================================ */
 @media (max-width: 420px) {
   .carousel-image {
-    height: 140px; /* smaller but still full image */
+    height: 140px;
   }
 
   .carousel-content {
@@ -170,4 +168,7 @@
   .carousel-sub {
     font-size: 11px;
   }
+}
+.chat-carousel img {
+  max-width: 100%;
 }
