@@ -65,13 +65,19 @@ body {
   letter-spacing: -0.3px;
 }
 
-/* SCROLL AREA */
+/* SCROLL AREA – FIXED */
 .chat-container {
   padding: 16px;
   background-color: #eef5fb;
-  height: calc(100% - var(--header-h) - var(--composer-h));
+
+  /* KEY FIX */
+  max-height: calc(100% - var(--header-h) - var(--composer-h));
   overflow-y: auto;
   scrollbar-gutter: stable;
+
+  /* minimal safe space above composer */
+  padding-bottom: 18px;
+  box-sizing: border-box;
 }
 
 /* Scrollbar */
@@ -131,12 +137,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
-    padding: 8px 0 50px 0;
+  padding: 8px 0;
 }
 
 .message {
   width: 100%;
   display: flex;
+  margin-bottom: 10px;
 }
 
 .message.user {
@@ -161,15 +168,17 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
 
-.user .bubble {
+/* USER MESSAGE */
+.message.user .bubble {
   background: var(--primary);
   border: none;
-  color: white;
+  color: #fff;
   box-shadow: 0 2px 6px rgba(0, 99, 175, 0.25);
 }
 
-/* COMPOSER */
+/* COMPOSER – LOCKED */
 .composer {
+  
   position: absolute;
   width: auto;
   bottom: 0px;

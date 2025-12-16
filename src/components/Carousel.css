@@ -1,0 +1,174 @@
+/* ===============================
+   Carousel Container
+================================ */
+.chat-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 10px auto;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   Slide Wrapper
+================================ */
+.carousel-slide {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+/* ===============================
+   Individual Slide
+================================ */
+.carousel-item {
+  display: none;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+.carousel-item.active {
+  display: block;
+}
+
+/* Hover only on desktop */
+@media (hover: hover) {
+  .carousel-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  }
+}
+
+/* ===============================
+   Image (FULL WIDTH FIX)
+================================ */
+.carousel-image {
+  width: 100%;
+  height: auto;          /* FIXED HEIGHT */
+  object-fit: contain;     /* ⬅ fills card fully */
+  object-position: center;
+  display: block;
+  border-radius: 14px 14px 0 0;
+  background: #f1f5f9;
+  max-height: 220px;
+}
+
+/* ===============================
+   Content Area
+================================ */
+.carousel-content {
+  padding: 12px;
+}
+
+.carousel-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.carousel-sub {
+  font-size: 12px;
+  color: #475569;
+  margin: 6px 0 10px;
+  line-height: 1.4;
+}
+
+/* ===============================
+   Buttons
+================================ */
+.carousel-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.carousel-btn {
+  background: #0072bc;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.carousel-btn:hover {
+  background: #005c97;
+}
+
+/* ===============================
+   Navigation Arrows
+================================ */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.carousel-arrow.left {
+  left: 6px;
+}
+
+.carousel-arrow.right {
+  right: 6px;
+}
+
+/* ===============================
+   Pagination Dots
+================================ */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: #0072bc;
+}
+
+/* ===============================
+   Widget & Mobile Safety
+================================ */
+@media (max-width: 420px) {
+  .carousel-image {
+    height: 140px;
+  }
+
+  .carousel-content {
+    padding: 10px;
+  }
+
+  .carousel-title {
+    font-size: 13px;
+  }
+
+  .carousel-sub {
+    font-size: 11px;
+  }
+}
+.chat-carousel img {
+  max-width: 100%;
+}

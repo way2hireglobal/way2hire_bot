@@ -83,13 +83,12 @@ exports.handler = async function(event, context) {
     const result = responses[0].queryResult;
 
     return {
-      statusCode: 200,
-      body: JSON.stringify({
-        text: result.fulfillmentText || '',
-        intent: result.intent?.displayName || null,
-        parameters: result.parameters || {}
-      })
-    };
+  statusCode: 200,
+  body: JSON.stringify({
+    queryResult: result
+  })
+};
+
 
   } catch (err) {
     console.error('Error in function', err);

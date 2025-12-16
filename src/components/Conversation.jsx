@@ -1,82 +1,120 @@
-import React, { useEffect, useState, useRef } from 'react';
+// src/components/Conversation.js
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import Carousel from './Carousel';
+import './Carousel.css';
+import homeCarouselItems from '../data/homeCarousel';
 
-export default function Conversation(){
-  const [messages, setMessages] = useState([
-  ]);
+export default function Conversation() {
+  const [messages, setMessages] = useState([]);
   const [value, setValue] = useState('');
-  const messagesRef = useRef(null);
+  const scrollRef = useRef(null);
+  const bottomRef = useRef(null);
 
+  // helper to push message
+  const push = useCallback((msg) => {
+    setMessages(m => [...m, { id: uuidv4(), ...msg }]);
+  }, []);
+
+  // ✅ CORRECT auto-scroll
   useEffect(() => {
-    const handler = (e) => {
-      const text = e.detail.text;
-      handleSend(text);
-    };
-    window.addEventListener('chat-send', handler);
-    return () => window.removeEventListener('chat-send', handler);
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  useEffect(() => {
-  const container = document.querySelector('.chat-container');
-  if (container) {
-    // smooth: container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
-    container.scrollTop = container.scrollHeight; // instant
-  }
-}, [messages]);
+  // handle carousel button click
+  const handlePostback = (postback) => {
+    handleSend(postback);
+  };
 
-  useEffect(() => {
-    // scroll to bottom
-    if(messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-    }
-  }, [messages]);
+  // send message to Dialogflow
+  const handleSend = useCallback(async (text) => {
+    if (!text || !text.trim()) return;
 
-  const push = (msg) => setMessages(m => [...m, { id: uuidv4(), ...msg }]);
-
-  const handleSend = async (text) => {
-    if(!text || !text.trim()) return;
     push({ from: 'user', text });
 
-    // call the Netlify function
+    let sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+      sessionId = uuidv4();
+      localStorage.setItem('sessionId', sessionId);
+    }
+
     try {
       const res = await fetch('/.netlify/functions/dialogflow', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // if you set an API_SECRET in Netlify, set header as well
-          //'x-api-secret': process.env.REACT_APP_API_SECRET || ''
-        },
-        body: JSON.stringify({ text, sessionId: 'web-' + localStorage.getItem('sessionId') || undefined })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, sessionId: 'web-' + sessionId })
       });
 
       const data = await res.json();
-      const reply = data.text || data.fulfillmentText || 'Sorry, no response.';
-      push({ from: 'bot', text: reply });
+
+      const replyText =
+        data.text ||
+        data.fulfillmentText ||
+        data?.queryResult?.fulfillmentText;
+
+      push({
+        from: 'bot',
+        text: replyText || 'Sorry, I did not understand that.'
+      });
     } catch (err) {
-      push({ from: 'bot', text: 'Error contacting server.' });
       console.error(err);
+      push({ from: 'bot', text: 'Error contacting server.' });
     }
+
     setValue('');
-  };
+  }, [push]);
+
+  // listen to Suggestions clicks
+  useEffect(() => {
+    const handler = (e) => {
+      if (e?.detail?.text) {
+        handleSend(e.detail.text);
+      }
+    };
+
+    window.addEventListener('chat-send', handler);
+    return () => window.removeEventListener('chat-send', handler);
+  }, [handleSend]);
 
   return (
     <div className="conversation-wrapper">
-      <div className="messages" ref={messagesRef}>
+      {/* SCROLLABLE CHAT AREA */}
+      <div className="chat-container" ref={scrollRef}>
+
+        {/* Carousel */}
+        <div className="carousel-section">
+          <Carousel
+            items={homeCarouselItems}
+            onButtonClick={handlePostback}
+          />
+        </div>
+
+        {/* Messages */}
         {messages.map(m => (
           <div key={m.id} className={`message ${m.from}`}>
             <div className="bubble">{m.text}</div>
           </div>
         ))}
+
+        {/* ✅ Scroll anchor (INSIDE container) */}
+        <div ref={bottomRef} />
       </div>
 
+      {/* Composer */}
       <div className="composer">
         <input
+          className="composer-input"
           placeholder="Type your message..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleSend(value); }}
+          onKeyDown={(e) => e.key === 'Enter' && handleSend(value)}
         />
-        <button onClick={() => handleSend(value)}>Send</button>
+        <button
+          className="composer-send"
+          onClick={() => handleSend(value)}
+        >
+          Send
+        </button>
       </div>
     </div>
   );
