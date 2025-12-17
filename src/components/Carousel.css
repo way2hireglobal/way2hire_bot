@@ -48,11 +48,11 @@
   width: 100%;
   height: auto;          /* FIXED HEIGHT */
   object-fit: cover;     /* ⬅ fills card fully */
-  object-position: center;
+  object-position: center bottom;
   display: block;
   border-radius: 14px 14px 0 0;
   background: #f1f5f9;
-  max-height: 220px;
+  max-height: 260px;
 }
 
 /* ===============================
@@ -154,7 +154,7 @@
 ================================ */
 @media (max-width: 420px) {
   .carousel-image {
-    height: 140px;
+    height: 170px;
   }
 
   .carousel-content {
