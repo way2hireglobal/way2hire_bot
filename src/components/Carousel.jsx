@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Carousel.css";
 
-export default function Carousel({ items = [], onButtonClick }) {
+export default function Carousel({ items = [] }) {
   const [index, setIndex] = useState(0);
   const intervalRef = useRef(null);
 
@@ -75,32 +75,20 @@ export default function Carousel({ items = [], onButtonClick }) {
             onClick={() => {
               if (item.link) {
                 window.open(item.link, "_blank", "noopener,noreferrer");
-
               }
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && item.link) {
                 window.open(item.link, "_blank", "noopener,noreferrer");
-
               }
             }}
           >
             <img
               src={item.imageUrl}
-              alt={item.title || `carousel ${i + 1}`}
+              alt={`carousel ${i + 1}`}
               loading="lazy"
               className="carousel-image"
             />
-
-            <div className="carousel-content">
-              <h4 className="carousel-title">{item.title}</h4>
-
-              {item.subtitle && (
-                <p className="carousel-sub">{item.subtitle}</p>
-              )}
-
-              
-            </div>
           </div>
         ))}
       </div>
