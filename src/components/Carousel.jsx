@@ -5,7 +5,7 @@ import "./Carousel.css";
 
 export default function Carousel({ items = [] }) {
   const [index, setIndex] = useState(0);
-  const [dotAnim, setDotAnim] = useState(""); // 👈 animation state
+  const [dotAnim, setDotAnim] = useState("");
   const intervalRef = useRef(null);
   const prevIndexRef = useRef(0);
 
@@ -20,7 +20,7 @@ export default function Carousel({ items = [] }) {
     setIndex((i) => (i + 1) % items.length);
   };
 
-  /* ---------- Detect direction (for spring) ---------- */
+  /* ---------- Detect direction (dot spring) ---------- */
   useEffect(() => {
     if (index > prevIndexRef.current) {
       setDotAnim("spring-right");
@@ -78,7 +78,9 @@ export default function Carousel({ items = [] }) {
       onMouseLeave={startAutoScroll}
     >
       {/* ---------- Left Arrow ---------- */}
-      <button className="carousel-arrow left" onClick={prev}>‹</button>
+      <button className="carousel-arrow left" onClick={prev} aria-label="Previous">
+        ‹
+      </button>
 
       {/* ---------- Slides ---------- */}
       <div className="carousel-slide">
@@ -88,10 +90,24 @@ export default function Carousel({ items = [] }) {
             className={`carousel-item ${i === index ? "active" : ""} ${
               item.link ? "clickable" : ""
             }`}
+            role={item.link ? "link" : undefined}
+            tabIndex={item.link ? 0 : -1}
+            aria-hidden={i !== index}
+            onClick={
+              item.link
+                ? () => window.open(item.link, "_blank", "noopener,noreferrer")
+                : undefined
+            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && item.link) {
+                window.open(item.link, "_blank", "noopener,noreferrer");
+              }
+            }}
           >
             <img
               src={item.imageUrl}
               alt={`carousel slide ${i + 1}`}
+              loading="lazy"
               className="carousel-image"
             />
           </div>
@@ -99,9 +115,11 @@ export default function Carousel({ items = [] }) {
       </div>
 
       {/* ---------- Right Arrow ---------- */}
-      <button className="carousel-arrow right" onClick={next}>›</button>
+      <button className="carousel-arrow right" onClick={next} aria-label="Next">
+        ›
+      </button>
 
-      {/* ---------- SPRING DOTS ---------- */}
+      {/* ---------- CONTINUOUS 3 DOTS (SPRING) ---------- */}
       <div className={`carousel-dots ${dotAnim}`}>
         {[0, 1, 2].map((dotIndex) => (
           <span
