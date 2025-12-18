@@ -1,9 +1,13 @@
+// Carousel.jsx
+
 import React, { useEffect, useRef, useState } from "react";
 import "./Carousel.css";
 
 export default function Carousel({ items = [] }) {
   const [index, setIndex] = useState(0);
+  const [dotAnim, setDotAnim] = useState(""); // 👈 animation state
   const intervalRef = useRef(null);
+  const prevIndexRef = useRef(0);
 
   if (!items.length) return null;
 
@@ -15,6 +19,20 @@ export default function Carousel({ items = [] }) {
   const next = () => {
     setIndex((i) => (i + 1) % items.length);
   };
+
+  /* ---------- Detect direction (for spring) ---------- */
+  useEffect(() => {
+    if (index > prevIndexRef.current) {
+      setDotAnim("spring-right");
+    } else if (index < prevIndexRef.current) {
+      setDotAnim("spring-left");
+    }
+
+    prevIndexRef.current = index;
+
+    const t = setTimeout(() => setDotAnim(""), 300);
+    return () => clearTimeout(t);
+  }, [index]);
 
   /* ---------- Keyboard navigation ---------- */
   useEffect(() => {
@@ -46,6 +64,11 @@ export default function Carousel({ items = [] }) {
     }
   };
 
+  /* ---------- DOT LOGIC ---------- */
+  const isFirst = index === 0;
+  const isLast = index === items.length - 1;
+  const activeDot = isFirst ? 0 : isLast ? 2 : 1;
+
   return (
     <div
       className="chat-carousel"
@@ -55,38 +78,20 @@ export default function Carousel({ items = [] }) {
       onMouseLeave={startAutoScroll}
     >
       {/* ---------- Left Arrow ---------- */}
-      <button
-        className="carousel-arrow left"
-        onClick={prev}
-        aria-label="Previous slide"
-      >
-        ‹
-      </button>
+      <button className="carousel-arrow left" onClick={prev}>‹</button>
 
       {/* ---------- Slides ---------- */}
       <div className="carousel-slide">
         {items.map((item, i) => (
           <div
             key={i}
-            className={`carousel-item ${i === index ? "active" : ""}`}
-            aria-hidden={i !== index}
-            role="link"
-            tabIndex={0}
-            onClick={() => {
-              if (item.link) {
-                window.open(item.link, "_blank", "noopener,noreferrer");
-              }
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && item.link) {
-                window.open(item.link, "_blank", "noopener,noreferrer");
-              }
-            }}
+            className={`carousel-item ${i === index ? "active" : ""} ${
+              item.link ? "clickable" : ""
+            }`}
           >
             <img
               src={item.imageUrl}
-              alt={`carousel ${i + 1}`}
-              loading="lazy"
+              alt={`carousel slide ${i + 1}`}
               className="carousel-image"
             />
           </div>
@@ -94,22 +99,14 @@ export default function Carousel({ items = [] }) {
       </div>
 
       {/* ---------- Right Arrow ---------- */}
-      <button
-        className="carousel-arrow right"
-        onClick={next}
-        aria-label="Next slide"
-      >
-        ›
-      </button>
+      <button className="carousel-arrow right" onClick={next}>›</button>
 
-      {/* ---------- Dots ---------- */}
-      <div className="carousel-dots">
-        {items.map((_, i) => (
-          <button
-            key={i}
-            className={`dot ${i === index ? "active" : ""}`}
-            onClick={() => setIndex(i)}
-            aria-label={`Go to slide ${i + 1}`}
+      {/* ---------- SPRING DOTS ---------- */}
+      <div className={`carousel-dots ${dotAnim}`}>
+        {[0, 1, 2].map((dotIndex) => (
+          <span
+            key={dotIndex}
+            className={`dot ${dotIndex === activeDot ? "active" : ""}`}
           />
         ))}
       </div>
