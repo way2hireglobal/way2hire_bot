@@ -107,7 +107,6 @@ export default function Carousel({ items = [] }) {
             <img
               src={item.imageUrl}
               alt={`carousel slide ${i + 1}`}
-              loading="lazy"
               className="carousel-image"
             />
           </div>
